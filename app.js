@@ -8,7 +8,8 @@ var indexRouter = require('./routes/index');
 // var usersRouter = require('./routes/user');
 var ConfigurationRouter = require('./routes/configurations');
 var TelemetryRouter = require('./routes/telemetry');
-var ConveneRouter =require('./routes/convene');
+var ConveneRouter = require('./routes/convene');
+var LanguageRouter = require('./routes/languages');
 const db = require('./config/configurations').MongoURI;
 const mongoose = require("mongoose");
 var app = express();
@@ -30,9 +31,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 // app.use('/users', usersRouter);
-app.use('/configuration',ConfigurationRouter);
-app.use('/telemetry',TelemetryRouter);
-app.use('/convene',ConveneRouter);
+app.use('/configuration', ConfigurationRouter);
+app.use('/telemetry', TelemetryRouter);
+app.use('/convene', ConveneRouter);
+app.use('/language',LanguageRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

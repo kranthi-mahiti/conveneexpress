@@ -6,6 +6,7 @@ let jwt = require('jsonwebtoken');
 let middleware = require('../middleware/auth');
 /* GET users listing. */
 const {base64encode, base64decode} = require('nodejs-base64');
+const Throttle = require('../models/Throttle');
 
 const ConfigurationJson = "{\n" +
     "    \"status\": 2,\n" +
@@ -29,6 +30,7 @@ const ConfigurationJson = "{\n" +
     "    \"can_continue_activity\": 0,\n" +
     "    \"style_array\":\"style\",\n" +
     "    \"string_array\":\"#e00303\",\n" +
+    "    \"app_lang\":\"english\",\n" +
     "    \"can_show_question_code\": 0\n" +
     "}";
 
@@ -40,7 +42,7 @@ const Response = "{" +
     "}";
 const ErrorResponse = "{}";
 
-router.get('/',middleware.checkToken, function (req, res, next) {
+router.get('/', middleware.checkToken, function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     res.send(ConfigurationJson);
 });
@@ -89,21 +91,30 @@ function authorization(username, password, cb) {
     cb(Response)
 }
 
-router.post('/convene',middleware.checkToken, function (req, res) {
+router.post('/convene', middleware.checkToken, function (req, res) {
     console.log(req.body); // the posted data
     res.setHeader('Content-Type', 'application/json');
     ResponseAkrspi(req.body.convene, function (Response) {
         res.send(Response);
     });
 });
-router.post('/throttle',middleware.checkToken, function (req, res) {
+router.post('/throttle', middleware.checkToken, function (req, res) {
     console.log(req.body.typeofnetwork); // the posted data
-    res.setHeader('Content-Type', 'application/json');
-    res.status(200).json({
-        "success":true,
-        "message":"network connectivity",
-        "network":req.body.typeofnetwork
-    });
+    Throttle.create(
+        {
+            type_of_network: req.body.typeofnetwork,
+            device_from: '',
+        }, function (err, throttle) {
+            if (err) return res.status(500).send("There was a problem registering the user.");
+            res.setHeader('Content-Type', 'application/json');
+            res.status(200).json({
+                "success": true,
+                "message": "network connectivity",
+                "network": req.body.typeofnetwork
+            });
+        }
+    );
+
 });
 
 router.post('/authorization', function (req, res) {
@@ -145,5 +156,8 @@ router.post('/authorization', function (req, res) {
         });
     }
 });
+
+
+
 
 module.exports = router;
