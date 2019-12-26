@@ -18,7 +18,12 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-mongoose.connect(db, {useNewUrlParser: true})
+mongoose.connect(db, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: true
+})
     .then(() => console.log('MongoDB Connected'))
     .catch(err => console.log(err));
 
@@ -34,7 +39,7 @@ app.use('/', indexRouter);
 app.use('/configuration', ConfigurationRouter);
 app.use('/telemetry', TelemetryRouter);
 app.use('/convene', ConveneRouter);
-app.use('/language',LanguageRouter);
+app.use('/language', LanguageRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

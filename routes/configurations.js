@@ -8,6 +8,11 @@ let middleware = require('../middleware/auth');
 const {base64encode, base64decode} = require('nodejs-base64');
 const Throttle = require('../models/Throttle');
 
+var amqp = require('amqp');
+var connection = amqp.createConnection({url: "amqp://localhost"},{defaultExchangeName: ''});
+connection.on('ready', function() {
+    console.log('connected');
+});
 const ConfigurationJson = "{\n" +
     "    \"status\": 2,\n" +
     "    \"can_show_periodicity\": 1,\n" +
@@ -30,7 +35,7 @@ const ConfigurationJson = "{\n" +
     "    \"can_continue_activity\": 0,\n" +
     "    \"style_array\":\"style\",\n" +
     "    \"string_array\":\"#e00303\",\n" +
-    "    \"app_lang\":\"english\",\n" +
+    "    \"app_lang\":\"en\",\n" +
     "    \"can_show_question_code\": 0\n" +
     "}";
 
@@ -43,6 +48,7 @@ const Response = "{" +
 const ErrorResponse = "{}";
 
 router.get('/', middleware.checkToken, function (req, res, next) {
+    connection.publish("convene", "hi");
     res.setHeader('Content-Type', 'application/json');
     res.send(ConfigurationJson);
 });
