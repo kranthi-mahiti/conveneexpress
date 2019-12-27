@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const key=require('../config/configurations')
+const key=require('../config/configurations');
 
 
 mongoose.connect(key.MongoURI, {

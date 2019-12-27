@@ -10,15 +10,44 @@ var ConfigurationRouter = require('./routes/configurations');
 var TelemetryRouter = require('./routes/telemetry');
 var ConveneRouter = require('./routes/convene');
 var LanguageRouter = require('./routes/languages');
-const db = require('./config/configurations').MongoURI;
+const db = require('./config/configurations');
 const mongoose = require("mongoose");
 var app = express();
-
+var amqp = require('amqplib/callback_api');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-mongoose.connect(db, {
+
+// var amqp = require('amqp');
+// var connection = amqp.createConnection({url: db.RabbitmqUrl, debug: true}, {defaultExchangeName: ''});
+// // var queue = connection.queue(db.QueueName, {durable: true});
+// // var exchange = connection.exchange(db.ExchangeName, {durable: true, type: db.ExchangeType, confirm: true});
+//
+// connection.on('ready', function () {
+//     console.log('Rabbit MQ connected');
+// });
+// connection.on('error', function () {
+//     console.log('error on connection')
+// });
+amqp.connect(db.RabbitmqUrl, function (error0, connection) {
+        if (error0) {
+            throw error0;
+        }
+        if(connection!='undefined')
+            console.log('Rabbit MQ Connected');
+
+    connection.createChannel(function(error1, channel) {
+        if (error1) {
+            throw error1;
+        }
+        channel.assertQueue(db.QueueName);
+        const msg = 'application started';
+        channel.sendToQueue(db.QueueName, Buffer.from(msg));
+        console.log(" [x] Sent %s", msg);
+    });
+});
+mongoose.connect(db.MongoURI, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
     useCreateIndex: true,

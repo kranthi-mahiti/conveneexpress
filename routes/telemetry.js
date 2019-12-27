@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
-const config = require("../config");
 let jwt = require('jsonwebtoken');
 let middleware = require('../middleware/auth');
 const Telemetry = require('../models/Telemetry');

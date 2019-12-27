@@ -1,18 +1,18 @@
 var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
-const config = require("../config");
+const config = require("../config/configurations");
 let jwt = require('jsonwebtoken');
 let middleware = require('../middleware/auth');
 /* GET users listing. */
 const {base64encode, base64decode} = require('nodejs-base64');
 const Throttle = require('../models/Throttle');
 
-var amqp = require('amqp');
-var connection = amqp.createConnection({url: "amqp://localhost"},{defaultExchangeName: ''});
-connection.on('ready', function() {
-    console.log('connected');
-});
+// var amqp = require('amqp');
+// var connection = amqp.createConnection({url: "amqp://localhost"},{defaultExchangeName: ''});
+// connection.on('ready', function() {
+//     console.log('Rabbit MQ connected');
+// });
 const ConfigurationJson = "{\n" +
     "    \"status\": 2,\n" +
     "    \"can_show_periodicity\": 1,\n" +
