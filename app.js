@@ -10,6 +10,7 @@ var ConfigurationRouter = require('./routes/configurations');
 var TelemetryRouter = require('./routes/telemetry');
 var ConveneRouter = require('./routes/convene');
 var LanguageRouter = require('./routes/languages');
+var HierarchyRouter=require('./routes/hierarchy');
 const db = require('./config/configurations');
 const mongoose = require("mongoose");
 var app = express();
@@ -69,7 +70,7 @@ app.use('/configuration', ConfigurationRouter);
 app.use('/telemetry', TelemetryRouter);
 app.use('/convene', ConveneRouter);
 app.use('/language', LanguageRouter);
-
+app.use('/hierarchy',HierarchyRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     next(createError(404));
