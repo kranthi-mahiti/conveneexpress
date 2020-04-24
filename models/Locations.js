@@ -2,10 +2,9 @@ const mongoose = require('mongoose');
 
 const HierarchySchema = mongoose.Schema({
     active: {
-        type: String,
-        trim: true
+        type: Boolean
     },
-    location_type:{
+    collection_type:{
         type:String,
         trim:true
     },
@@ -13,11 +12,23 @@ const HierarchySchema = mongoose.Schema({
         type:String,
         trim:true
     },
-    location_id:{
+    id:{
         type:String,
         trim:true
     },
-    location_parent_id:{
+    parent_id:{
+        type:String,
+        trim:true
+    },
+    level_name:{
+        type:String,
+        trim:true
+    },
+    type:{
+        type:String,
+        trim:true
+    },
+    tag:{
         type:String,
         trim:true
     },
@@ -30,6 +41,6 @@ const HierarchySchema = mongoose.Schema({
         default: Date.now()
     }
 });
-const Hierarchy = mongoose.model('Locations', HierarchySchema);
+const Locations = mongoose.model('Locations', HierarchySchema);
 
-module.exports = Hierarchy;
+module.exports = Locations;

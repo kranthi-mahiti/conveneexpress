@@ -7,7 +7,7 @@ var faker = require('faker');
 /* GET users listing. */
 const {base64encode, base64decode} = require('nodejs-base64');
 
-const Hierarchy = require('../models/Hierarchy');
+const Hierarchy = require('../models/Locations');
 
 router.post('/locations', middleware.checkToken, function (req, res) {
     res.setHeader('Content-Type', 'application/json');

@@ -135,7 +135,7 @@ router.post('/authorization', function (req, res) {
             let token = jwt.sign({username: username},
                 config.secret,
                 {
-                    expiresIn: '24h' // expires in 24 hours
+                    expiresIn: '48h' // expires in 24 hours
                 }
             );
             // return the JWT token for the future API calls
