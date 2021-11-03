@@ -24,7 +24,7 @@
     "mongoose": "^5.7.5",
     "morgan": "~1.9.1",
     "nodejs-base64": "^1.0.3",
-    "validator": "^11.0.0"
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "env-cmd": "^9.0.3",
